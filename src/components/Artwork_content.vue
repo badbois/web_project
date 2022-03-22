@@ -1,7 +1,8 @@
 <template>
     <div id="content" >
         <div id="description">
-            <h1>{{title}}</h1>
+            <h1>{{this.detail.artObject.title}}</h1>
+            <h2>{{this.detail.artObject.principalMaker}}, {{this.detail.artObject.dating.presentingDate}}</h2>
             <p> {{this.description}}</p>
         </div>
         <div id="image">
@@ -25,23 +26,20 @@ export default {
 
     props: {
         image_url : {type : String, required: true},
-        title: {type : String, required: true},
         object_number: {type : String, required: true}
     },
 
     methods :{
 
+        /*API issue, to get english desscription we have to look if it exist
+        If not, the dutch description is, in fact, in english*/
         async get_description(){
             this.detail=await get_description_from_api(this.object_number);
-            // description en dutch
-            //this.description = this.detail.artObject.label.description
             if(this.detail.artObject.plaqueDescriptionEnglish == null){
                 this.description = this.detail.artObject.plaqueDescriptionDutch;
             }else{
                 this.description = this.detail.artObject.plaqueDescriptionEnglish;
             }
-            
-           // console.log(this.detail) 
         },
     },
 
@@ -70,8 +68,8 @@ padding-top: 200px;
 #description{
     height: 400px;
     width: 400px;
-    /* background-color: hotpink; */
     color : #f1f0f0;
+    text-align: left;
 }
 
 #image{
@@ -87,6 +85,10 @@ padding-top: 200px;
 
 h1{
     font-size: 24px;
+}
+
+h2{
+    font-size: 21px;
 }
 
 p{

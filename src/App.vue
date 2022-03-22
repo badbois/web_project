@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <Header/>
-    <Artwork_content :image_url="object.webImage.url" :title="object.longTitle" :object_number="object.objectNumber" v-for="object in (art_objects)" :key="object.id"/>
-    <button id="show_more" v-on:click="increment_page_number()"> voir plus</button>
+    <Artwork_content :image_url="object.webImage.url" :object_number="object.objectNumber" v-for="object in (art_objects)" :key="object.id"/>
+    <button id="show_more" v-on:click="increment_page_number()">more</button>
     <Footer/>
   </div>
 </template>
@@ -68,8 +68,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background-color: rgb(51, 51, 51);
-  
+  background-color: rgb(17, 17, 17);
 }
 
 
