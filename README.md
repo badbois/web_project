@@ -1,4 +1,7 @@
-# web_project
+# web_project 🎨
+
+## Project description
+This website shows every art object that are in the Rijksmuseum, a kind of intagram like for the museum.
 
 ## Project setup
 ```
@@ -20,5 +23,5 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### API used
+https://data.rijksmuseum.nl/object-metadata/api/
