@@ -23,5 +23,5 @@ npm run build
 npm run lint
 ```
 
-### API used
+## API used
 https://data.rijksmuseum.nl/object-metadata/api/
