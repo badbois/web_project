@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header :artwork_sort_type.sync="artwork_sort_type"/>
+    <Header :search.sync="search" :artwork_sort_type.sync="artwork_sort_type"/>
     <Artwork_content 
       v-for="object in artwork_organized_data" 
       :image_url="object.webImage.url" 
@@ -32,6 +32,7 @@ export default {
       art_objects: [],
       indice: 0,
       page_number: 1,
+      search: localStorage.getItem("search") || "",
       artwork_sort_type: localStorage.getItem("artwork_sort_type") || "AZName"
     }
   },
@@ -39,8 +40,9 @@ export default {
   computed: {
 		artwork_organized_data: function() {
 			const reversed = ["ZAName"].includes(this.artwork_sort_type)
+      const filter_func = (a) => a.title.toLowerCase().includes(this.search.toLowerCase())
 			const comparator = (a, b) => a.title.localeCompare(b.title) 
-			let data = this.art_objects
+			let data = this.art_objects.filter(filter_func)
 			data = data.sort(comparator)
 			if (reversed) data = data.reverse()
 			return data
@@ -52,7 +54,6 @@ export default {
       window.onload= await get_objects_from_API(this.page_number);
       this.objects= window.onload;
       this.art_objects = this.objects.artObjects;
-      console.log(this.objects);
     },
 
     async get_next_page_product(){
