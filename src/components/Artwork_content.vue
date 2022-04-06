@@ -1,8 +1,8 @@
 <template>
     <div id="content" >
         <div id="description">
-            <h1>{{this.detail.artObject.title}}</h1>
-            <h2>{{this.detail.artObject.principalMaker}}, {{this.detail.artObject.dating.presentingDate}}</h2>
+            <h1>{{this.title}}</h1>
+            <h2>{{this.principal_maker}}, {{this.presenting_date}}</h2>
             <p> {{this.description}}</p>
         </div>
         <div id="image">
@@ -20,7 +20,10 @@ export default {
     data(){
         return{
         detail: [],
-        description: ""
+        title: "",
+        principal_maker: "",
+        presenting_date: "",
+        description: "",
         }
     },
 
@@ -31,11 +34,12 @@ export default {
 
     methods :{
 
-        /*API issue, to get english desscription we have to look if it exist
-        If not, the dutch description is, in fact, in english*/
         async get_description(){
             this.detail=await get_description_from_api(this.object_number);
-                this.description = this.detail.artObject.description;
+            this.title=this.detail.artObject.title;
+            this.principal_maker=this.detail.artObject.principalMaker;
+            this.presenting_date=this.detail.artObject.dating.presentingDate;
+            this.description = this.detail.artObject.description;
         },
     },
 
