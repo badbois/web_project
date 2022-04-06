@@ -1,7 +1,11 @@
 <template>
   <div id="app">
-    <Header/>
-    <Artwork_content :image_url="object.webImage.url" :object_number="object.objectNumber" v-for="object in (art_objects)" :key="object.id"/>
+    <Header :artwork_sort_type.sync="artwork_sort_type"/>
+    <Artwork_content 
+      v-for="object in artwork_organized_data" 
+      :image_url="object.webImage.url" 
+      :object_number="object.objectNumber"  
+      :key="object.id"/>
     <button id="show_more" v-on:click="increment_page_number()">more</button>
     <Footer/>
   </div>
@@ -27,9 +31,21 @@ export default {
       objects: [],
       art_objects: [],
       indice: 0,
-      page_number: 1
+      page_number: 1,
+      artwork_sort_type: localStorage.getItem("artwork_sort_type") || "AZName"
     }
   },
+
+  computed: {
+		artwork_organized_data: function() {
+			const reversed = ["ZAName"].includes(this.artwork_sort_type)
+			const comparator = (a, b) => a.title.localeCompare(b.title) 
+			let data = this.art_objects
+			data = data.sort(comparator)
+			if (reversed) data = data.reverse()
+			return data
+		}
+	},
 
   methods:{
     async get_first_page_on_loading(){
@@ -50,6 +66,9 @@ export default {
       this.page_number++;
       this.get_next_page_product();
     }
+
+
+
   },
 
   //Au chargement de la page je charge mes images

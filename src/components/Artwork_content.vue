@@ -35,11 +35,7 @@ export default {
         If not, the dutch description is, in fact, in english*/
         async get_description(){
             this.detail=await get_description_from_api(this.object_number);
-            if(this.detail.artObject.plaqueDescriptionEnglish == null){
-                this.description = this.detail.artObject.plaqueDescriptionDutch;
-            }else{
-                this.description = this.detail.artObject.plaqueDescriptionEnglish;
-            }
+                this.description = this.detail.artObject.description;
         },
     },
 
@@ -62,11 +58,11 @@ padding-inline: 110px;
 background-color: rgb(17, 17, 17);
 color : #f1f0f0;
 font-size: 12px;
-padding-top: 200px;
+padding-top: 160px;
+padding-bottom: 40px;
 }
 
 #description{
-    height: 400px;
     width: 400px;
     color : #f1f0f0;
     text-align: left;

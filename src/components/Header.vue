@@ -4,12 +4,11 @@
             <h1 id="titre">Nom_du_site</h1>
 
             <div id="search_bar">
-                <select name="type" id="type_select">
-                    <option value="artist">artist</option>
-                    <option value="artwork">artwork</option>
+                <label for="artwork_sort"> Sort by : </label>
+                <select :value="artwork_sort_type" @input="on_artwork_sort_type_changed" id="artwork_sort">
+                    <option value="AZName">A-Z</option>
+                    <option value="ZAName">Z-A</option>
                 </select>
-                <input type="text" id="search_input" name="search_input">
-                <button id="search_button" type="button">Search</button>
             </div>
         </nav>
 
@@ -18,7 +17,23 @@
 
 <script>
 export default {
-  name: 'Header'
+  name: 'Header',
+
+  props:{
+    artwork_sort_type : String, 
+  },
+
+  watch: {
+    artwork_sort_type: function(new_artwork_sort_type) {
+			localStorage.setItem("artwork_sort_type", new_artwork_sort_type)
+		}
+  },
+
+  methods: {
+    on_artwork_sort_type_changed(event){
+      this.$emit('update:artwork_sort_type', event.target.value) 
+    }
+  }
 }
 </script>
 
