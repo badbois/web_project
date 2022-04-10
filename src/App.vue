@@ -6,7 +6,7 @@
       :image_url="object.webImage.url" 
       :object_number="object.objectNumber"  
       :key="object.id"/>
-    <button id="show_more" v-on:click="increment_page_number()">more</button>
+    <button id="show_more" v-if="this.is_more" v-on:click="increment_page_number()">more</button>
     <Footer/>
   </div>
 </template>
@@ -33,7 +33,8 @@ export default {
       indice: 0,
       page_number: 1,
       search: localStorage.getItem("search") || "",
-      artwork_sort_type: localStorage.getItem("artwork_sort_type") || "AZName"
+      artwork_sort_type: localStorage.getItem("artwork_sort_type") || "AZName",
+      is_found: true,
     }
   },
 
@@ -45,6 +46,7 @@ export default {
 			let data = this.art_objects.filter(filter_func)
 			data = data.sort(comparator)
 			if (reversed) data = data.reverse()
+      this.change_is_found(data.length)
 			return data
 		}
 	},
@@ -66,6 +68,14 @@ export default {
     increment_page_number(){
       this.page_number++;
       this.get_next_page_product();
+    },
+
+    change_is_found(data_length){
+      if(data_length==0){
+        this.is_found=false;
+      }else{
+        this.is_found=true;
+      }
     }
 
 
