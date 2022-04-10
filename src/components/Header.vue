@@ -5,11 +5,11 @@
 
             <div id="search_bar">
               <div id="search">
-                <button v-if="search" @click="cleanSearch">clear</button>
-                <input type="text" :value="search" @input="on_search_changed" placeholder="Search by name">
+                <button v-if="search" @click="cleanSearch">wissen</button>
+                <input type="text" :value="search" @input="on_search_changed" placeholder="Zoek op naam">
               </div>
               <div id="sort">
-                <label for="artwork_sort"> Sort by : </label>
+                <label for="artwork_sort"> Sorteer op : </label>
                 <select :value="artwork_sort_type" @input="on_artwork_sort_type_changed" id="artwork_sort">
                     <option value="AZName">A-Z</option>
                     <option value="ZAName">Z-A</option>

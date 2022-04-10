@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <p>website created by Jordan Roberty</p>
+        <p>Website gemaakt door Jordan Roberty</p>
     </footer>
 </template>
 
