@@ -1,12 +1,18 @@
 <template>
   <div id="app">
     <Header :search.sync="search" :artwork_sort_type.sync="artwork_sort_type"/>
-    <Artwork_content 
+    <div v-if="!loaded" id="loader_box">
+      <div id="loader"></div>
+    </div>
+    <div v-else-if="!data_empty" id="no_artwork">
+      <h2 id="text_no_artwork"> No Artwork found </h2>
+    </div>
+    <Artwork_content v-else
       v-for="object in artwork_organized_data" 
       :image_url="object.webImage.url" 
       :object_number="object.objectNumber"  
       :key="object.id"/>
-    <button id="show_more" v-if="this.is_more" v-on:click="increment_page_number()">more</button>
+    <button v-if="loaded && data_empty" id="show_more" v-on:click="increment_page_number()">more</button>
     <Footer/>
   </div>
 </template>
@@ -32,13 +38,14 @@ export default {
       art_objects: [],
       indice: 0,
       page_number: 1,
-      search: localStorage.getItem("search") || "",
+      search: "",
+      loaded: false,
       artwork_sort_type: localStorage.getItem("artwork_sort_type") || "AZName",
-      is_found: true,
     }
   },
 
   computed: {
+
 		artwork_organized_data: function() {
 			const reversed = ["ZAName"].includes(this.artwork_sort_type)
       const filter_func = (a) => a.title.toLowerCase().includes(this.search.toLowerCase())
@@ -46,9 +53,13 @@ export default {
 			let data = this.art_objects.filter(filter_func)
 			data = data.sort(comparator)
 			if (reversed) data = data.reverse()
-      this.change_is_found(data.length)
-			return data
-		}
+      return data
+		},
+
+    data_empty: function() {
+      let data=this.artwork_organized_data
+      return (data.length==0) ? false : true
+    }
 	},
 
   methods:{
@@ -56,6 +67,7 @@ export default {
       window.onload= await get_objects_from_API(this.page_number);
       this.objects= window.onload;
       this.art_objects = this.objects.artObjects;
+      this.loaded=true;
     },
 
     async get_next_page_product(){
@@ -69,14 +81,6 @@ export default {
       this.page_number++;
       this.get_next_page_product();
     },
-
-    change_is_found(data_length){
-      if(data_length==0){
-        this.is_found=false;
-      }else{
-        this.is_found=true;
-      }
-    }
 
 
 
@@ -101,8 +105,6 @@ export default {
   background-color: rgb(17, 17, 17);
 }
 
-
-
 html{
   overflow-x: hidden;
 }
@@ -111,5 +113,91 @@ html{
   position : relative;
   z-index: 2;
 }
+
+#loader_box, #no_artwork{
+  /* padding-top: 160px;
+  padding-bottom: 40px; */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#loader {
+  color: #f1f0f0;
+  font-size: 20px;
+  margin: 100px auto;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  position: relative;
+  text-indent: -9999em;
+  -webkit-animation: load4 1.5s infinite linear;
+  animation: load4 1.5s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+#text_no_artwork{
+  color: #f1f0f0
+}
+
+
+@-webkit-keyframes load4 {
+  0%,
+  100% {
+    box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+  }
+  12.5% {
+    box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+  }
+  25% {
+    box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+  }
+  37.5% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+  }
+  50% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+  }
+  62.5% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+  }
+  75% {
+    box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+  }
+  87.5% {
+    box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+  }
+}
+@keyframes load4 {
+  0%,
+  100% {
+    box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+  }
+  12.5% {
+    box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+  }
+  25% {
+    box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+  }
+  37.5% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+  }
+  50% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+  }
+  62.5% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+  }
+  75% {
+    box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+  }
+  87.5% {
+    box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+  }
+}
+
 
 </style>
