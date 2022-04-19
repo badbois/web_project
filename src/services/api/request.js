@@ -5,7 +5,6 @@ const get_objects_from_API = async function(page_number) {
       page_number);
   if (response.status == 200) {
     data = response.json();
-    console.log('is ok');
 
   } else {
     new Error(response.statusText);
@@ -22,7 +21,6 @@ const get_description_from_api =
       '?key=vU9Ifyh5');
   if (response.status == 200) {
     data = response.json();
-    console.log('is ok');
 
   } else {
     new Error(response.statusText);
