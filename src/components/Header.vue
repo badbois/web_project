@@ -31,10 +31,6 @@ export default {
   },
 
   watch: {
-    search: function(new_search) {
-			localStorage.setItem("search", new_search)
-		},
-
     artwork_sort_type: function(new_artwork_sort_type) {
 			localStorage.setItem("artwork_sort_type", new_artwork_sort_type)
 		}
