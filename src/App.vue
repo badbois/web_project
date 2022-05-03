@@ -4,15 +4,17 @@
     <div v-if="!loaded" id="loader_box">
       <div id="loader"></div>
     </div>
-    <div v-else-if="!data_empty" id="no_artwork">
-      <h2 id="text_no_artwork"> No Artwork found </h2>
+    <div v-else-if="data_empty" id="no_artwork">
+      <h2 id="text_no_artwork"> Geen kunstwerk gevonden </h2>
     </div>
     <Artwork_content v-else
       v-for="object in artwork_organized_data" 
       :image_url="object.webImage.url" 
       :object_number="object.objectNumber"  
       :key="object.id"/>
-    <button v-if="loaded && data_empty" id="show_more" v-on:click="increment_page_number()">more</button>
+    <div v-if="loaded && !search" id="div_show_more">
+      <button  id="show_more" v-on:click="increment_page_number()">more</button>
+    </div>
     <Footer/>
   </div>
 </template>
@@ -58,7 +60,7 @@ export default {
 
     data_empty: function() {
       let data=this.artwork_organized_data
-      return (data.length==0) ? false : true
+      return (data.length==0) ? true : false
     }
 	},
 
@@ -103,14 +105,22 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   background-color: rgb(17, 17, 17);
+  height: 100vh;
 }
 
 html{
   overflow-x: hidden;
 }
 
-#show_more{
+#div_show_more{
+  display: flex;
+  justify-content: center;
+  background-color: rgb(17, 17, 17);
   position : relative;
+  padding-bottom: 20px;
+}
+
+#show_more{
   z-index: 2;
 }
 
