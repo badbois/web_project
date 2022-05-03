@@ -13,7 +13,7 @@
       :object_number="object.objectNumber"  
       :key="object.id"/>
     <div v-if="loaded && !search" id="div_show_more">
-      <button  id="show_more" v-on:click="increment_page_number()">more</button>
+      <button  id="show_more" v-on:click="increment_page_number()">meer</button>
     </div>
     <Footer/>
   </div>
@@ -88,7 +88,7 @@ export default {
 
   },
 
-  //Au chargement de la page je charge mes images
+  //Load data on page load
   beforeMount(){
     this.get_first_page_on_loading();
   }
