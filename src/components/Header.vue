@@ -84,5 +84,60 @@ button{
   margin-right: 10px;
 }
 
+select{
+  background-color: #2E2E2E;
+  border: none;
+  color: #f1f0f0;
+  text-align: right;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+
+  nav{
+    height: 100%;
+  }
+
+  header{
+     height: 40px;
+  }  
+
+  #search_bar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  }
+
+  #search{
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  button{
+    font-size: 12px;
+    height: auto;
+  }
+
+  h1{
+    display: none;
+  }
+
+  input{
+    width: 90px;
+    font-size: 12px;
+  }
+
+  label{
+    font-size: 12px;
+  }
+
+  select{
+    font-size: 12px;
+    width: 50px;
+    background-color: none;
+  }
+}
+
 
 </style>
