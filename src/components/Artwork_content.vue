@@ -54,7 +54,7 @@ export default {
 
 <style scoped>
 
-
+/*For computer*/
 .content{
 display: flex;
 justify-content: space-between;

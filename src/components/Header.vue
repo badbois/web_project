@@ -5,12 +5,12 @@
 
             <div id="search_bar">
               <div id="search">
-                <button v-if="search" @click="cleanSearch">wissen</button>
+                <button v-show="search" @click="cleanSearch">wissen</button>
                 <input type="text" :value="search" @input="on_search_changed" placeholder="Zoek op naam">
               </div>
               <div id="sort">
                 <label for="artwork_sort"> Sorteer op : </label>
-                <select :value="artwork_sort_type" @input="on_artwork_sort_type_changed" id="artwork_sort">
+                <select v-model="artwork_sort_type" @input="on_artwork_sort_type_changed" id="artwork_sort">
                     <option value="AZName">A-Z</option>
                     <option value="ZAName">Z-A</option>
                 </select>
@@ -26,11 +26,12 @@ export default {
   name: 'Header',
 
   props:{
-    search : String,
-    artwork_sort_type : String, 
+    search : {type : String, required: true},
+    artwork_sort_type : {type : String, required: true}, 
   },
 
   watch: {
+    // Watch for changes in the search value and update the localstorage value
     artwork_sort_type: function(new_artwork_sort_type) {
 			localStorage.setItem("artwork_sort_type", new_artwork_sort_type)
 		}
@@ -41,10 +42,12 @@ export default {
       this.$emit('update:search', "")
     },
 
+    // When the search value changes, emit the new value
     on_search_changed: function(event){
       this.$emit('update:search', event.target.value)
     },
 
+    // When the artwork_sort_type value changes, emit the new value
     on_artwork_sort_type_changed(event){
       this.$emit('update:artwork_sort_type', event.target.value) 
     }
@@ -55,7 +58,7 @@ export default {
 
 <style>
 
-
+/* For computer*/
 header{
 background-color: rgb(46, 46, 46);
 color : #f1f0f0;

@@ -1,17 +1,21 @@
 <template>
   <div id="app">
     <Header :search.sync="search" :artwork_sort_type.sync="artwork_sort_type"/>
+    <!-- Loading animation -->
     <div v-if="!loaded" id="loader_box">
       <div id="loader"></div>
     </div>
+    <!-- No results -->
     <div v-else-if="data_empty" id="no_artwork">
       <h2 id="text_no_artwork"> Geen kunstwerk gevonden </h2>
     </div>
+    <!-- Artwork list -->
     <Artwork_content v-else
       v-for="object in artwork_organized_data" 
       :image_url="object.webImage.url" 
       :object_number="object.objectNumber"  
       :key="object.id"/>
+    <!--- show more -->
     <div v-if="loaded && !search" id="div_show_more">
       <button  id="show_more" v-on:click="increment_page_number()">meer</button>
     </div>
@@ -48,6 +52,7 @@ export default {
 
   computed: {
 
+    // Return the data that match our search
 		artwork_organized_data: function() {
 			const reversed = ["ZAName"].includes(this.artwork_sort_type)
       const filter_func = (a) => a.title.toLowerCase().includes(this.search.toLowerCase())
@@ -58,6 +63,7 @@ export default {
       return data
 		},
 
+    //return true if there is no data
     data_empty: function() {
       let data=this.artwork_organized_data
       return (data.length==0) ? true : false
@@ -65,6 +71,8 @@ export default {
 	},
 
   methods:{
+
+    // Get the data from the API at the load of the page
     async get_first_page_on_loading(){
       window.onload= await get_objects_from_API(this.page_number);
       this.objects= window.onload;
@@ -72,6 +80,7 @@ export default {
       this.loaded=true;
     },
 
+    // Get the data from the API when the user click on the show more button
     async get_next_page_product(){
       this.objects=await get_objects_from_API(this.page_number); 
       this.objects.artObjects.forEach(element => {
@@ -79,6 +88,7 @@ export default {
       });
     },
 
+    // Increment the page number
     increment_page_number(){
       this.page_number++;
       this.get_next_page_product();
@@ -89,7 +99,7 @@ export default {
   },
 
   //Load data on page load
-  beforeMount(){
+  created(){
     this.get_first_page_on_loading();
   }
 }
@@ -98,6 +108,7 @@ export default {
 </script>
 
 <style>
+
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
